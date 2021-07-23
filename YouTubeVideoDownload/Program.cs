@@ -11,12 +11,13 @@ using YouTubeVideoDownload.Utilities;
 
 namespace YouTubeVideoDownload
 {
-    class Program
+    internal class Program
     {
         private static bool _IsValidDirectorySelected = false;
         private static bool _IsValidVideoIdSelected = false;
         private static bool _IsVideoIdValid = false;
         private static int _tableWidth = 70;
+
         public static async Task Main(string[] args)
         {
             // display texto de introdução
@@ -32,7 +33,7 @@ namespace YouTubeVideoDownload
 
             Console.WriteLine("Fetching streams...\n");
 
-            //get the manifest streams for the video 
+            //get the manifest streams for the video
             var streamManifest = await _youtubeClient.Videos.Streams.GetManifestAsync(videoId);
 
             //get the video
@@ -114,11 +115,12 @@ namespace YouTubeVideoDownload
         }
 
         #region User Inputs
+
         /// <summary>
         /// Asks the user to input the youtube video id or the youtube video url
         /// </summary>
         /// <param name="videoId">user input will be validated and binded to this</param>
-        static void GetVideoInformationFromInput(ref VideoId videoId)
+        private static void GetVideoInformationFromInput(ref VideoId videoId)
         {
             do
             {
@@ -139,16 +141,14 @@ namespace YouTubeVideoDownload
         private static VideoId NewMethod()
         {
             return new VideoId();
-         }
-
-       
+        }
 
         /// <summary>
         /// Get the stream number which needs to be downloaded from the stream list of the youtube video id or youtube video url provided
         /// </summary>
         /// <param name="selectedStreamOption">a reference to the selected stream option</param>
         /// <param name="streamCount">the number of streams from the stream manifest</param>
-        static void GetDownloadStreamNumberFromInput(ref int selectedStreamOption, int streamCount = 0)
+        private static void GetDownloadStreamNumberFromInput(ref int selectedStreamOption, int streamCount = 0)
         {
             do
             {
@@ -165,7 +165,6 @@ namespace YouTubeVideoDownload
                 {
                     _IsValidVideoIdSelected = true;
                 }
-
             } while (!_IsValidVideoIdSelected);
         }
 
@@ -174,7 +173,7 @@ namespace YouTubeVideoDownload
         /// </summary>
         /// <param name="directoryPath">a reference to the directory path</param>
         /// <param name="fileName">file name of the download file</param>
-        static void GetSaveDirectoryFromInput(ref string directoryPath, string fileName)
+        private static void GetSaveDirectoryFromInput(ref string directoryPath, string fileName)
         {
             do
             {
@@ -196,15 +195,16 @@ namespace YouTubeVideoDownload
             } while (!_IsValidDirectorySelected);
         }
 
-        #endregion
+        #endregion User Inputs
 
         #region Validations
+
         /// <summary>
         /// Validates a given save directory path
         /// </summary>
         /// <param name="directory">name of the directory path which needs to be validated</param>
         /// <returns>returns a tuple countaining information about whether the directory is valid or not and error messages</returns>
-        static Tuple<bool, string> ValidateSaveDirectory(string directory)
+        private static Tuple<bool, string> ValidateSaveDirectory(string directory)
         {
             if (string.IsNullOrWhiteSpace(directory)) return Tuple.Create(true, string.Empty);
 
@@ -227,14 +227,14 @@ namespace YouTubeVideoDownload
         /// </summary>
         /// <param name="name">name of the file which is going to be validated</param>
         /// <returns>returns if the validation succeeded or not</returns>
-        static bool ValidateFileName(string name)
+        private static bool ValidateFileName(string name)
         {
             Regex containsABadCharacter = new Regex("[" + Regex.Escape(string.Join("", Path.GetInvalidFileNameChars())) + "]");
             if (containsABadCharacter.IsMatch(name)) return false;
             return true;
         }
 
-        #endregion
+        #endregion Validations
 
         #endregion Display Information
 
@@ -276,6 +276,7 @@ namespace YouTubeVideoDownload
 
             Console.WriteLine(row);
         }
+
         #endregion Table UI
     }
 }
