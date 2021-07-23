@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Text;
 using System.Text.RegularExpressions;
 
 namespace YouTubeVideoDownload.Extensions
@@ -14,7 +12,7 @@ namespace YouTubeVideoDownload.Extensions
             str = Regex.Replace(str, @"[^a-z0-9\s-]", "");
             // converte multiplos espaços em um unico espaço
             str = Regex.Replace(str, @"\s+", " ").Trim();
-            // cut and trim 
+            // cut and trim
             str = str.Substring(0, str.Length <= 45 ? str.Length : 45).Trim();
             str = Regex.Replace(str, @"\s", "-"); // hifem
             return str;

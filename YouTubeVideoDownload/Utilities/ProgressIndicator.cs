@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace YouTubeVideoDownload.Utilities
 {
@@ -20,10 +18,10 @@ namespace YouTubeVideoDownload.Utilities
             Console.SetCursorPosition(_positionX, _positionY);
             Console.WriteLine($"{progress:P1}");
         }
+
         public void Dispose()
         {
             Console.SetCursorPosition(_positionX, _positionY);
         }
-
     }
 }
