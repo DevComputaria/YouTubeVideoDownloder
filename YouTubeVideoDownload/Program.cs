@@ -11,7 +11,8 @@ using YouTubeVideoDownload.Utilities;
 
 namespace YouTubeVideoDownload
 {
-    internal class Program
+
+    public static class Program
     {
         private static bool _IsValidDirectorySelected = false;
         private static bool _IsValidVideoIdSelected = false;
@@ -35,6 +36,9 @@ namespace YouTubeVideoDownload
 
             //get the manifest streams for the video
             var streamManifest = await _youtubeClient.Videos.Streams.GetManifestAsync(videoId);
+
+            if (streamManifest == null)
+                throw new Exception(videoId);
 
             //get the video
             var video = await _youtubeClient.Videos.GetAsync(videoId);
@@ -241,6 +245,23 @@ namespace YouTubeVideoDownload
         #region Table UI
 
         /// <summary>
+        /// Draws a single table row
+        /// </summary>
+        /// <param name="columns">columns to be drawn</param>
+        private static void PrintRow(params string[] columns)
+        {
+            int width = (_tableWidth - columns.Length) / columns.Length;
+            string row = "|";
+
+            foreach (string column in columns)
+            {
+                row += AlignCentre(column, width) + "|";
+            }
+
+            Console.WriteLine(row);
+        }
+
+        /// <summary>
         /// Aligning text in a column
         /// </summary>
         /// <param name="text">text of the colum</param>
@@ -259,24 +280,7 @@ namespace YouTubeVideoDownload
         /// </summary>
         /// <param name="drawCharacter">character representing the divider</param>
         private static void PrintDivider(char drawCharacter = '-') => Console.WriteLine(new string(drawCharacter, _tableWidth));
-
-        /// <summary>
-        /// Draws a single table row
-        /// </summary>
-        /// <param name="columns">columns to be drawn</param>
-        private static void PrintRow(params string[] columns)
-        {
-            int width = (_tableWidth - columns.Length) / columns.Length;
-            string row = "|";
-
-            foreach (string column in columns)
-            {
-                row += AlignCentre(column, width) + "|";
-            }
-
-            Console.WriteLine(row);
-        }
-
+        
         #endregion Table UI
     }
 }
